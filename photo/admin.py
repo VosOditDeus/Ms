@@ -13,9 +13,6 @@ class ImageAdmin(admin.ModelAdmin):
                     "created", 'thumbnail']
     list_filter = ["tags", "albums"]
 
-    def save_model(self, request, obj, form, change):
-        obj.user = request.user
-        obj.save()
 
 
 admin.site.register(Album, AlbumAdmin)

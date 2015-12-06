@@ -1,9 +1,14 @@
 {% extends "base1.html" %}
 {% load staticfiles %}
 {% block content %}
-    {% for img in images %}
-        <img src="{{ img }}">
-        <p>{{ title }}</p>
-        <div class="glyphicon glyphicon-thumbs-up">{{ likes }}</div>
-    {% endfor %}
+    <ul>
+    <div class="title">{{ album.title }}</div>
+    <ul>
+        {% for img in images.object_list %}
+            <a href="{{ media_url }}{{ img.image.name }}"><img border="0" alt=""
+                src="{{ media_url }}{{ img.image.name }}" height="100" /></a>
+            {# TODO:Write normal thumbnail or something to prewiew images on 300x300 at least #}
+        {% endfor %}
+    </ul>
+</ul>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.shortcuts import render_to_response, redirect, get_object_or_404,HttpResponse
 from django.views.generic import View
 from django.contrib import auth
 from django.core.context_processors import csrf
@@ -30,7 +30,7 @@ def God(request):
     images=Image.objects.all()
     if not request.user.is_authenticated():
         albums=albums.filter(public=True)
-    paginator = Paginator(albums, 1)
+    paginator = Paginator(albums, 2)
     try:
         page = int(request.GET.get("page", '1'))
     except ValueError: page = 1
@@ -77,20 +77,21 @@ def addComment(request, image_id):
             form.save()
     return redirect('/image/%s' % image_id)
 
+def album(request, pk):
+    """Album listing."""
+    album = Album.objects.get(pk=pk)
+    if not album.public and not request.user.is_authenticated():
+        return HttpResponse("Error: you need to be logged in to view this album.")
 
-def Prewiew(request, image_id):
-    args = { }
-    img = Image.objects.get(id=image_id)
-    args['image'] = Image.objects.get(id=image_id)
-    args['album']=img.album.title
-    return render_to_response('prewiew.html', args)
-def Albums(request):
-    args = {}
-    alb = Album.objects.get(id=1)
-    if alb.public==True:
-        #args['images']=
-        args['title']= alb.title
-        args['likes']=alb.likes
-    else:
-        redirect("/")
-    return render_to_response('album.html', args)
+    images = album.image_set.all()
+    paginator = Paginator(images, 30)
+    try: page = int(request.GET.get("page", '1'))
+    except ValueError: page = 1
+
+    try:
+        images = paginator.page(page)
+    except (InvalidPage, EmptyPage):
+        images = paginator.page(paginator.num_pages)
+
+    return render_to_response("album.html", dict(album=album, images=images, user=request.user,
+        media_url=MEDIA_URL))

@@ -1,8 +1,7 @@
 __author__ = 'vosoditdeus'
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from Ms import settings
 from django.conf.urls.static import static
-from photo.views import *
 
 urlpatterns = patterns('',
                        # Examples:
@@ -11,7 +10,6 @@ urlpatterns = patterns('',
                        url(r'addcomment/(?P<photo_id>\d)$', 'photo.views.addComment'),
                        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
                         {'document_root': settings.MEDIA_ROOT}),
-                       url(r'preview/(?P<image_id>\d+)$', 'photo.views.Prewiew'),
-                       url(r'album/(?P<album_id>\d+)$', 'photo.views.Albums'),
+                       url(r"^album/(?P<pk>\d)$", "photo.views.album", name='album'),
                        url(r'^about', 'photo.views.about'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

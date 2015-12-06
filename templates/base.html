@@ -6,7 +6,8 @@
         <!--Albums-->
         <ul>
             {% for album in albums.object_list %}
-                <div class="title"> {{ album.title }} ({{ albums.image_set.count }} images)</div>
+                <div class="title"><a href="photo/album/{{ album.pk }}">{{ album.title }}</a>
+                    ({{ albums.images.count}} images)</div>
                 <ul>
                     {% for img in album.images %}
                         <a href="{{ media_url }}{{ img.image.name }}">
