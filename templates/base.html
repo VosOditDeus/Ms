@@ -1,0 +1,39 @@
+{% extends 'base1.html' %}
+{% load staticfiles %}
+{% load url from future %}
+{% block content %}
+    <div clas="main">
+        <!--Albums-->
+        <ul>
+            {% for album in albums.object_list %}
+                <div class="title"> {{ album.title }} ({{ albums.image_set.count }} images)</div>
+                <ul>
+                    {% for img in album.images %}
+                        <a href="{{ media_url }}{{ img.image.name }}">
+                            <img border="0" alt="" src="{{ img.image.url }}" height="100"/></a>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </ul>
+        </ul>
+        <!-- Next/Prev page links  -->
+        {% if albums.object_list and albums.paginator.num_pages > 1 %}
+            <div class="pagination">
+            <span class="step-links">
+                {% if albums.has_previous %}
+                    <a href="?page={{ albums.previous_page_number }}">previous &lt;&lt; </a>
+                {% endif %}
+
+                <span class="current">
+                    &nbsp;Page {{ albums.number }} of {{ albums.paginator.num_pages }}
+                </span>
+
+                {% if albums.has_next %}
+                    <a href="?page={{ albums.next_page_number }}"> &gt;&gt; next</a>
+                {% endif %}
+            </span>
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+p {
+    color: #000000;
+
+}
+
+body {
+    background: url('../images/bg_content.png') repeat;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+}
+
+h1 {
+    color: #134569;
+}
+
+span {
+    color: #000000;
+}

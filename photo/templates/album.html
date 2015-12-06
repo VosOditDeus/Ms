@@ -1,0 +1,9 @@
+{% extends "base1.html" %}
+{% load staticfiles %}
+{% block content %}
+    {% for img in images %}
+        <img src="{{ img }}">
+        <p>{{ title }}</p>
+        <div class="glyphicon glyphicon-thumbs-up">{{ likes }}</div>
+    {% endfor %}
+{% endblock %}
