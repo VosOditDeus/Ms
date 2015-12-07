@@ -6,8 +6,9 @@
     <ul>
         {% for img in images.object_list %}
             <a href="{{ media_url }}{{ img.image.name }}"><img border="0" alt=""
-                src="{{ media_url }}{{ img.image.name }}" height="100" /></a>
-            {# TODO:Write normal thumbnail or something to prewiew images on 300x300 at least #}
+                src="{{ media_url }}{{ img.thumbnail2 }}"/></a>
+            <a hre<img class="glyphicon-thumbs-up"/>
+            {# TODO:Write normal thumbnail or something to prewiew images on 300+ #}
         {% endfor %}
     </ul>
 </ul>

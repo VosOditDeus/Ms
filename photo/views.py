@@ -95,3 +95,9 @@ def album(request, pk):
 
     return render_to_response("album.html", dict(album=album, images=images, user=request.user,
         media_url=MEDIA_URL))
+def image(request, pk):
+    """Image page."""
+    img = Image.objects.get(pk=pk)
+    return render_to_response("image.html", dict(image=img, user=request.user,
+         backurl=request.META["HTTP_REFERER"], media_url=MEDIA_URL))
+#TODO:What the fuck is it, i honestly don't know, but i need this structure- List-albums-images-media_url
