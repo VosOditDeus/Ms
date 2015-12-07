@@ -1,13 +1,14 @@
-from django.shortcuts import render_to_response, redirect, get_object_or_404,HttpResponse
-from django.views.generic import View
+from django.shortcuts import render_to_response, redirect, get_object_or_404,HttpResponse,Http404
+#from django.views.generic import View
 from django.contrib import auth
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.core.exceptions import ObjectDoesNotExist
 from Ms.settings import MEDIA_URL
 from models import *
 from forms import *
-
+# coding: utf-8
 """
 Class-based views
 class God(View):
@@ -20,7 +21,7 @@ class God(View):
         args['form'] = form
         args['username']=auth.get_user(request).username
         #args['albums']=Album.objects.get(created_by=User)
-        return render_to_response('base1.html', args)
+        return render_to_response('base1.html', args)always go
 
     def post(self, request):
         pass
@@ -50,23 +51,28 @@ def about(request):
 
 
 def login(request):
-    c = {}
-    c.update(csrf(request))
+    args = {}
+    args.update(csrf(request))
     if request.POST:
-        username=request.POST.get('username','')
-        password=request.POST.get('password','')
-        user = auth.authenticate(username=username,password=password)
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        user = auth.authenticate(username=username, password=password)
         if user is not None:
-            auth.login(request,user)
-            return render_to_response('main.html', auth.get_user(user))
+            auth.login(request, user)
+            args['user']=auth.get_user(request)
+            return redirect('/', args)
         else:
-            c['login_error']="User does not exict"
-            return render_to_response('main.html', c)
+            args['login_error'] ="Not found"
+            return render_to_response('main.html', args)
+
     else:
-        return render_to_response('main.html', c)
+        return render_to_response('main.html', args)
+
+
 def logout(request):
     auth.logout(request)
-    return render_to_response('/')
+    return redirect('/')
+
 
 def addComment(request, image_id):
     if request.POST:
@@ -101,3 +107,17 @@ def image(request, pk):
     return render_to_response("image.html", dict(image=img, user=request.user,
          backurl=request.META["HTTP_REFERER"], media_url=MEDIA_URL))
 #TODO:What the fuck is it, i honestly don't know, but i need this structure- List-albums-images-media_url
+def addlike(request,image_id):
+    try:
+        if image_id in request.COOKIES:
+            #TODO:Write more complete system to fight like abuse
+            redirect('/')
+        else:
+            image = Image.objects.get(id=image_id)
+            image.likes+=1
+            image.save()
+            responce=redirect('album/%s' % (image_id))
+            responce.set_cookie(image_id,'test cookie')
+    except ObjectDoesNotExist:
+        raise Http404
+    return redirect('album/%s' % (image_id))

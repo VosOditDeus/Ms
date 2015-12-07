@@ -20,7 +20,7 @@ class Tag(models.Model):
 class Album(models.Model):
     title = models.CharField(max_length=60)
     public = models.BooleanField(default=False)
-    likes = models.IntegerField(default=0, blank=True, null=True, editable=False)
+    rating = models.IntegerField(default=0, blank=True, null=True, editable=False)
     created_by = models.ForeignKey(User, related_name="author", blank=True, null=True)
 
     def __unicode__(self):
@@ -43,7 +43,7 @@ class Image(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     width = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
-    rating = models.IntegerField(default=0, blank=True, null=True, editable=False)
+    likes = models.IntegerField(default=0, blank=True, null=True, editable=False)
     thumbnail2 = models.ImageField(upload_to="media/", blank=True, null=True)
     def __unicode__(self):
         return self.image.name

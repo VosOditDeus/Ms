@@ -4,12 +4,12 @@ from photo.models import Album, Image, Tag
 
 class AlbumAdmin(admin.ModelAdmin):
     search_fields = ["title"]
-    list_display = ["title", "images"]
+    list_display = ["title", "images",'rating']
 
 
 class ImageAdmin(admin.ModelAdmin):
     # search_fields = ["title"]
-    list_display = ["__unicode__", "title", "user", "size", "tags_", "rating",
+    list_display = ["__unicode__", "title", "user", "size", "tags_", "likes",
                     "created", 'thumbnail']
     list_filter = ["tags", "albums"]
 
