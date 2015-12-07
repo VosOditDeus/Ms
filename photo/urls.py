@@ -12,5 +12,6 @@ urlpatterns = patterns('',
                         {'document_root': settings.MEDIA_ROOT}),
                        url(r"^album/(?P<pk>\d)$", "photo.views.album", name='album'),
                        url(r'^about', 'photo.views.about'),
-                       url(r"^image/(\d+)/$", "photo.views.image",name='image'),
+                       url(r"^image/(\d+)/$", "photo.views.image", name='image'),
+                       url(r'^addlike/(?P<img_id>\d+)/$','photo.views.addlike', name='addlike'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, redirect, get_object_or_404,HttpResponse,Http404
+from django.shortcuts import render_to_response, redirect,HttpResponse,Http404,HttpResponseRedirect
 #from django.views.generic import View
 from django.contrib import auth
 from django.core.context_processors import csrf
@@ -59,7 +59,7 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            args['user']=auth.get_user(request)
+            args['user'] = auth.get_user(request)
             return redirect('/', args)
         else:
             args['login_error'] ="Not found"
@@ -72,7 +72,6 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
-
 
 def addComment(request, image_id):
     if request.POST:
@@ -107,17 +106,20 @@ def image(request, pk):
     return render_to_response("image.html", dict(image=img, user=request.user,
          backurl=request.META["HTTP_REFERER"], media_url=MEDIA_URL))
 #TODO:What the fuck is it, i honestly don't know, but i need this structure- List-albums-images-media_url
-def addlike(request,image_id):
+def addlike(request,img_id):
+    print img_id
     try:
-        if image_id in request.COOKIES:
+        if img_id in request.COOKIES:
             #TODO:Write more complete system to fight like abuse
             redirect('/')
+            print img_id
         else:
-            image = Image.objects.get(id=image_id)
+            image = Image.objects.get(id=img_id)
             image.likes+=1
             image.save()
-            responce=redirect('album/%s' % (image_id))
-            responce.set_cookie(image_id,'test cookie')
+            responce=HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            responce.set_cookie(img_id,'test cookie')
+            print img_id
     except ObjectDoesNotExist:
         raise Http404
-    return redirect('album/%s' % (image_id))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

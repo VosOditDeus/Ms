@@ -4,10 +4,10 @@
     <ul>
     <div class="title">{{ album.title }}</div>
     <ul>
-        {% for img in images.object_list %}
+        {% for img in images %}
             <a href="{{ media_url }}{{ img.image.name }}"><img border="0" alt=""
                 src="{{ media_url }}{{ img.thumbnail2 }}"/></a>
-            <a hre<img class="glyphicon-thumbs-up"/>
+            <a href="/photo/addlike/{{ img.id }}"><i class="glyphicon glyphicon-thumbs-up"></i></a>{{ img.likes }}
             {# TODO:Write normal thumbnail or something to prewiew images on 300+ #}
         {% endfor %}
     </ul>
