@@ -1,11 +1,11 @@
-from models import Comment
+from models import Comment,Image
 from django.forms import forms, ModelForm
 
 
-class PhotoSubmit(forms.Form):
-    pass
-
-
+class PhotoForm(ModelForm):
+    class Meta:
+        model = Image
+        fields = ['image', 'title', 'tags', 'albums']
 class PhotoSearchTags(forms.Form):
     pass
 

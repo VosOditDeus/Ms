@@ -10,6 +10,24 @@
             <a href="/photo/addlike/{{ img.id }}"><i class="glyphicon glyphicon-thumbs-up"></i></a>{{ img.likes }}
             {# TODO:Write normal thumbnail or something to prewiew images on 300+ #}
         {% endfor %}
+    <!-- Next/Prev page links  -->
+        {% if images.object_list and images.paginator.num_pages > 1 %}
+            <div class="pagination">
+            <span class="step-links">
+                {% if images.has_previous %}
+                    <a href="?page={{ images.previous_page_number }}">previous &lt;&lt; </a>
+                {% endif %}
+
+                <span class="current">
+                    &nbsp;Page {{ images.number }} of {{ images.paginator.num_pages }}
+                </span>
+
+                {% if images.has_next %}
+                    <a href="?page={{ images.next_page_number }}"> &gt;&gt; next</a>
+                {% endif %}
+            </span>
+            </div>
+        {% endif %}
     </ul>
 </ul>
 {% endblock %}

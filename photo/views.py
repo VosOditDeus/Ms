@@ -1,10 +1,12 @@
-from django.shortcuts import render_to_response, redirect,HttpResponse,Http404,HttpResponseRedirect
+from django.shortcuts import render_to_response, redirect,HttpResponse,Http404,HttpResponseRedirect,get_object_or_404
 #from django.views.generic import View
 from django.contrib import auth
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
+
 from Ms.settings import MEDIA_URL
 from models import *
 from forms import *
@@ -26,6 +28,11 @@ class God(View):
     def post(self, request):
         pass
 """
+
+def about(request):
+    return render_to_response('about.html')
+
+
 def God(request):
     albums=Album.objects.all()
     images=Image.objects.all()
@@ -41,14 +48,10 @@ def God(request):
         albums = paginator.page(paginator.num_pages)
 
     for album in albums.object_list:
-        album.images = album.image_set.all()[:4]
+        album.images = album.image_set.all()
 
     return render_to_response("base.html", dict(albums=albums, user=request.user,
         media_url=MEDIA_URL,images=images))
-
-def about(request):
-    return render_to_response('about.html')
-
 
 def login(request):
     args = {}
@@ -73,18 +76,33 @@ def logout(request):
     auth.logout(request)
     return redirect('/')
 
-def addComment(request, image_id):
+def addComment(request, pk):
     if request.POST:
         form = CommentForm
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.poste_to.get(id=image_id)
+            comment.poste_to.get(pk=pk)
             form.save()
-    return redirect('/image/%s' % image_id)
-
+    return redirect('/image/%s' % pk)
+@login_required()
+def addPhoto(request):
+    args = {}
+    args.update(csrf(request))
+    if request.method == "POST":
+        form = PhotoForm(request.POST, files=request.FILES)
+        if form.is_valid():
+            img = form.save(commit=False)
+            img.user = request.user
+            img.save()
+            form.save_m2m()
+            return redirect('/')
+    else:
+        form = PhotoForm()
+        args['form'] = form
+    return render_to_response('addphoto.html',args)
 def album(request, pk):
     """Album listing."""
-    album = Album.objects.get(pk=pk)
+    album = get_object_or_404(Album,pk=pk)
     if not album.public and not request.user.is_authenticated():
         return HttpResponse("Error: you need to be logged in to view this album.")
 
@@ -97,20 +115,24 @@ def album(request, pk):
         images = paginator.page(page)
     except (InvalidPage, EmptyPage):
         images = paginator.page(paginator.num_pages)
-
+    print pk
     return render_to_response("album.html", dict(album=album, images=images, user=request.user,
         media_url=MEDIA_URL))
+
+
 def image(request, pk):
     """Image page."""
     img = Image.objects.get(pk=pk)
     return render_to_response("image.html", dict(image=img, user=request.user,
          backurl=request.META["HTTP_REFERER"], media_url=MEDIA_URL))
 #TODO:What the fuck is it, i honestly don't know, but i need this structure- List-albums-images-media_url
+
+
 def addlike(request,img_id):
     print img_id
     try:
         if img_id in request.COOKIES:
-            #TODO:Write more complete system to fight like abuse
+            #TODO:Write NORMAL system to prevent likes abuse
             redirect('/')
             print img_id
         else:

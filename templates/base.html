@@ -11,7 +11,7 @@
                 <ul>
                     {% for img in album.images %}
                         <a href="{{ media_url }}{{ img.image.name }}">
-                            <img border="0" alt="" src="{{ img.image.url }}" height="100"/></a>
+                            <img border="0" alt="" src="{{ media_url }}{{ img.image.name }}" height="100"/></a>
                     {% endfor %}
                 </ul>
             {% endfor %}
