@@ -11,7 +11,7 @@ urlpatterns = patterns('',
 
                        url(r'^admin/', include(admin.site.urls)),
                        (r'^photo/', include('photo.urls')),
-                       url(r'^login', 'photo.views.login'),
-                       url(r'logout', 'photo.views.logout'),
-                       url(r"^$", 'photo.views.God'),
+                       url(r'^login', 'photo.views.login',name='login'),
+                       url(r'logout', 'photo.views.logout',name='logout'),
+                       url(r"^$", 'photo.views.God',name='God'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

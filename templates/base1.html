@@ -42,7 +42,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="../addPhoto">Upload your Picture</a></li>
+                        <li><a href="{% url "addPhoto" %}">Upload your Picture</a></li>
                         <li><a href="#">Show your Albums</a></li>
                         <li><a href="#">Browse other Albums</a></li>
                         <li role="separator" class="divider"></li>
@@ -51,14 +51,14 @@
                         <li><a href="#">Partners</a></li>
                     </ul>
                 </li>
-                <li><a href="../photo/about.html">About</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
 
             </ul>
             <ul class="nav navbar -nav navbar-right">
                 {% if user.is_authenticated %}
-                    <li class="float-right"><a href="logout">Logout({{ user.get_username }})</a></li>
+                    <li class="float-right"><a href="{% url 'login' %}">Logout({{ user.get_username }})</a></li>
                 {% else %}
-                    <li class="float-left"><a href="login">Login</a></li>
+                    <li class="float-left"><a href="{% url 'logout' %}">Login</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -126,8 +126,8 @@
 <!-- /.carousel -->
 <div class="container-fluid">
     <div class="header">
-        <h1>New images arived, everyone to the hypetrain!
-            <small>Not actually, don't belive him. He is kinda retarded</small>
+        <h1>New images arrived, everyone to the hypetrain!
+            <small>Not actually, don't believe him. He is kinda retarded</small>
         </h1>
     </div>
 
