@@ -1,0 +1,10 @@
+{% extends 'base1.html' %}
+{% load staticfiles %}
+{% load url from future %}
+{% block content %}
+<form method="POST" class="photo-form" enctype="multipart/form-data">
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit" class="save btn btn-default">Submit</button>
+</form>
+{% endblock %}
