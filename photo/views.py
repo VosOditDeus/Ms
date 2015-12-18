@@ -34,14 +34,15 @@ def about(request):
 
 
 def God(request):
-    albums=Album.objects.all()
-    images=Image.objects.all()
+    albums = Album.objects.all()
+    images = Image.objects.all()
     if not request.user.is_authenticated():
-        albums=albums.filter(public=True)
+        albums = albums.filter(public=True)
     paginator = Paginator(albums, 2)
     try:
         page = int(request.GET.get("page", '1'))
-    except ValueError: page = 1
+    except ValueError:
+        page = 1
     try:
         albums = paginator.page(page)
     except (InvalidPage, EmptyPage):
@@ -49,9 +50,9 @@ def God(request):
 
     for album in albums.object_list:
         album.images = album.image_set.all()
-
+    time = timezone._time.time()
     return render_to_response("base.html", dict(albums=albums, user=request.user,
-        media_url=MEDIA_URL,images=images))
+                                                media_url=MEDIA_URL, images=images, time=time))
 
 def login(request):
     args = {}
@@ -77,11 +78,12 @@ def logout(request):
     return redirect('/')
 
 def addComment(request, pk):
-    if request.POST:
-        form = CommentForm
+    if request.method=="POST":
+        form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.poste_to.get(pk=pk)
+            comment.save()
             form.save()
     return redirect('/image/%s' % pk)
 @login_required()
@@ -100,16 +102,20 @@ def addPhoto(request):
         form = PhotoForm()
         args['form'] = form
     return render_to_response('addphoto.html',args)
+
+
 def album(request, pk):
     """Album listing."""
-    album = get_object_or_404(Album,pk=pk)
+    album = get_object_or_404(Album, pk=pk)
     if not album.public and not request.user.is_authenticated():
         return HttpResponse("Error: you need to be logged in to view this album.")
 
     images = album.image_set.all()
     paginator = Paginator(images, 30)
-    try: page = int(request.GET.get("page", '1'))
-    except ValueError: page = 1
+    try:
+        page = int(request.GET.get("page", '1'))
+    except ValueError:
+        page = 1
 
     try:
         images = paginator.page(page)
@@ -117,30 +123,30 @@ def album(request, pk):
         images = paginator.page(paginator.num_pages)
     print pk
     return render_to_response("album.html", dict(album=album, images=images, user=request.user,
-        media_url=MEDIA_URL))
+                                                 media_url=MEDIA_URL))
 
 
 def image(request, pk):
     """Image page."""
     img = Image.objects.get(pk=pk)
     return render_to_response("image.html", dict(image=img, user=request.user,
-         backurl=request.META["HTTP_REFERER"], media_url=MEDIA_URL))
+                                                 backurl=request.META["HTTP_REFERER"], media_url=MEDIA_URL))
 #TODO:What the fuck is it, i honestly don't know, but i need this structure- List-albums-images-media_url
 
 
-def addlike(request,img_id):
+def addlike(request, img_id):
     print img_id
     try:
         if img_id in request.COOKIES:
-            #TODO:Write NORMAL system to prevent likes abuse
+            # TODO:Write NORMAL system to prevent likes abuse,that will WORK at least
             redirect('/')
             print img_id
         else:
             image = Image.objects.get(id=img_id)
-            image.likes+=1
+            image.likes += 1
             image.save()
-            responce=HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            responce.set_cookie(img_id,'test cookie')
+            responce = HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            responce.set_cookie(img_id, 'test cookie')
             print img_id
     except ObjectDoesNotExist:
         raise Http404
