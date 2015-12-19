@@ -4,7 +4,7 @@ from photo.models import Album, Image, Tag
 
 class AlbumAdmin(admin.ModelAdmin):
     search_fields = ["title"]
-    list_display = ["title", "images",'rating']
+    list_display = ["title", "images",'rating','public']
 
 
 class ImageAdmin(admin.ModelAdmin):

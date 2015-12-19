@@ -50,7 +50,7 @@ def God(request):
 
     for album in albums.object_list:
         album.images = album.image_set.all()
-    time = timezone._time.time()
+    time = timezone.now()
     return render_to_response("base.html", dict(albums=albums, user=request.user,
                                                 media_url=MEDIA_URL, images=images, time=time))
 
@@ -78,7 +78,7 @@ def logout(request):
     return redirect('/')
 
 def addComment(request, pk):
-    if request.method=="POST":
+    if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
@@ -86,6 +86,7 @@ def addComment(request, pk):
             comment.save()
             form.save()
     return redirect('/image/%s' % pk)
+#TODO: REWORK LOGIN REQUIRED
 @login_required()
 def addPhoto(request):
     args = {}
@@ -121,7 +122,6 @@ def album(request, pk):
         images = paginator.page(page)
     except (InvalidPage, EmptyPage):
         images = paginator.page(paginator.num_pages)
-    print pk
     return render_to_response("album.html", dict(album=album, images=images, user=request.user,
                                                  media_url=MEDIA_URL))
 
@@ -135,19 +135,18 @@ def image(request, pk):
 
 
 def addlike(request, img_id):
-    print img_id
     try:
-        if img_id in request.COOKIES:
-            # TODO:Write NORMAL system to prevent likes abuse,that will WORK at least
-            redirect('/')
-            print img_id
+        if request.session.get('image') == img_id:
+            #TODO: Like Abuse
+            return redirect(request.META.get('HTTP_REFERER'))
         else:
             image = Image.objects.get(id=img_id)
             image.likes += 1
             image.save()
-            responce = HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            responce.set_cookie(img_id, 'test cookie')
-            print img_id
+            request.session.create()
+            request.session.set_expiry(100)
+            request.session['image'] = img_id
+            #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     except ObjectDoesNotExist:
         raise Http404
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
