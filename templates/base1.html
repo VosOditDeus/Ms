@@ -64,6 +64,7 @@
         </div>
     </div>
 </nav>
+{% block carousel %}
 <!-- Carousel
        ================================================== -->
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -123,6 +124,7 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
+{% endblock %}
 <!-- /.carousel -->
 <div class="container-fluid">
     <div class="header">
@@ -132,7 +134,6 @@
     </div>
 
     <div class="jumbotron">
-    <p>{{ time }}</p>
         {% block login %}{% endblock %}
         {% block content %}{% endblock %}
     </div>
