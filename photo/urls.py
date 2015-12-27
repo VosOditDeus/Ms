@@ -11,8 +11,6 @@ urlpatterns = patterns('',
                        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
                         {'document_root': settings.MEDIA_ROOT}),
                        url(r"^album/(?P<pk>\d)$", "photo.views.album", name='album'),
-                       url(r'^about', 'photo.views.about',name='about'),
-                       url(r"^image/(\d+)/$", "photo.views.image", name='image'),
                        url(r'^addlike/(?P<img_id>\d+)/$','photo.views.addlike', name='addlike'),
                        url(r'^addPhoto/','photo.views.addPhoto', name='addPhoto'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

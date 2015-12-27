@@ -1,38 +1,13 @@
-import simplejson as simplejson
-from django.shortcuts import render_to_response, redirect,HttpResponse,Http404,HttpResponseRedirect,get_object_or_404
-#from django.views.generic import View
+from django.shortcuts import render_to_response, redirect,HttpResponse,HttpResponseRedirect,get_object_or_404
 from django.contrib import auth
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from Ms.settings import MEDIA_URL
 from models import *
 from forms import *
 # coding: utf-8
-"""
-Class-based views
-class God(View):
-
-    def get(self, request):
-        form = CommentForm(request.POST)
-        args = {}
-        args.update(csrf(request))
-        args['image'] = Image.objects.all()
-        args['form'] = form
-        args['username']=auth.get_user(request).username
-        #args['albums']=Album.objects.get(created_by=User)
-        return render_to_response('base1.html', args)always go
-
-    def post(self, request):
-        pass
-"""
-
-def about(request):
-    return render_to_response('about.html')
-
-
 def God(request):
     albums = Album.objects.all()
     images = Image.objects.all()
@@ -86,7 +61,7 @@ def addComment(request, pk):
             comment.save()
             form.save()
     return redirect('/image/%s' % pk)
-#TODO: REWORK LOGIN REQUIRED
+#TODO: REWORK LOGIN SYSTEM, BUG WITH SESSIONS
 @login_required()
 def addPhoto(request):
     args = {}
@@ -124,16 +99,6 @@ def album(request, pk):
         images = paginator.page(paginator.num_pages)
     return render_to_response("album.html", dict(album=album, images=images, user=request.user,
                                                  media_url=MEDIA_URL))
-
-
-def image(request, pk):
-    """Image page."""
-    img = Image.objects.get(pk=pk)
-    return render_to_response("image.html", dict(image=img, user=request.user,
-                                                 backurl=request.META["HTTP_REFERER"], media_url=MEDIA_URL))
-#TODO:What the fuck is it, i honestly don't know, but i need this structure- List-albums-images-media_url
-
-
 def addlike(request, img_id):
     if img_id:
         a=Image.objects.get(id=img_id)
