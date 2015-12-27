@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from Ms import settings
-from photo.views import God
 from django.conf.urls.static import static
 
 urlpatterns = patterns('',

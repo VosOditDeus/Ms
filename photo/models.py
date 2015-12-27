@@ -1,13 +1,11 @@
 from django.db import models
 from django.core.files import File
 from django.contrib.auth.models import User
-from django.contrib import admin
 from tempfile import NamedTemporaryFile
 from string import join
 import os
 from PIL import Image as PImage
 from Ms.settings import MEDIA_ROOT
-
 
 # -*- coding: utf-8 -*-
 class Tag(models.Model):
@@ -22,7 +20,6 @@ class Album(models.Model):
     public = models.BooleanField(default=False)
     rating = models.IntegerField(default=0, blank=True, null=True, editable=False)
     created_by = models.ForeignKey(User, related_name="author", blank=True, null=True)
-
     def __unicode__(self):
         return self.title
 
@@ -43,8 +40,10 @@ class Image(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     width = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
-    likes = models.IntegerField(default=0, blank=True, null=True, editable=False)
     thumbnail2 = models.ImageField(upload_to="media/", blank=True, null=True)
+    liked_persons = models.ManyToManyField(User, related_name='follows', symmetrical=False, blank=True)
+    likes = models.IntegerField(default=0)
+
     def __unicode__(self):
         return self.image.name
 
@@ -69,15 +68,13 @@ class Image(models.Model):
         im.save(tf2.name, "JPEG")
         self.thumbnail2.save(thumb_fn, File(open(tf2.name)), save=False)
         tf2.close()
-
         super(Image, self).save(*args, ** kwargs)
     def size(self):
         """Image size."""
         return "Width:%s x Height:%s" % (self.width, self.height)
-
     def tags_(self):
         lst = [x[1] for x in self.tags.values_list()]
-        return str(join(lst, ', '))
+        return str(join(lst, ','))
 
 
     thumbnail.allow_tags = True

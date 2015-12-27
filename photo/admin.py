@@ -1,7 +1,6 @@
 from django.contrib import admin
 from photo.models import Album, Image, Tag
 
-
 class AlbumAdmin(admin.ModelAdmin):
     search_fields = ["title"]
     list_display = ["title", "images",'rating','public']
@@ -9,11 +8,9 @@ class AlbumAdmin(admin.ModelAdmin):
 
 class ImageAdmin(admin.ModelAdmin):
     # search_fields = ["title"]
-    list_display = ["__unicode__", "title", "user", "size", "tags_", "likes",
+    list_display = ["title", "user", "size", "tags_",
                     "created", 'thumbnail']
     list_filter = ["tags", "albums"]
-
-
 
 admin.site.register(Album, AlbumAdmin)
 admin.site.register(Tag)

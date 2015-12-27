@@ -1,3 +1,4 @@
+import simplejson as simplejson
 from django.shortcuts import render_to_response, redirect,HttpResponse,Http404,HttpResponseRedirect,get_object_or_404
 #from django.views.generic import View
 from django.contrib import auth
@@ -6,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
-
 from Ms.settings import MEDIA_URL
 from models import *
 from forms import *
@@ -135,18 +135,15 @@ def image(request, pk):
 
 
 def addlike(request, img_id):
-    try:
-        if request.session.get('image') == img_id:
-            #TODO: Like Abuse
-            return redirect(request.META.get('HTTP_REFERER'))
+    if img_id:
+        a=Image.objects.get(id=img_id)
+        ifliked=a.liked_persons.filter(username=request.user).exists()
+        if not ifliked:
+            a.liked_persons.add(request.user)
+            a.likes += 1
+            a.save()
         else:
-            image = Image.objects.get(id=img_id)
-            image.likes += 1
-            image.save()
-            request.session.create()
-            request.session.set_expiry(100)
-            request.session['image'] = img_id
-            #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    except ObjectDoesNotExist:
-        raise Http404
+            a.liked_persons.remove(request.user)
+            a.likes -= 1
+            a.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
