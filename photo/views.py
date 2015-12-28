@@ -3,7 +3,6 @@ from django.contrib import auth
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.utils import timezone
 from Ms.settings import MEDIA_URL
 from models import *
 from forms import *
@@ -25,10 +24,8 @@ def God(request):
 
     for album in albums.object_list:
         album.images = album.image_set.all()
-    time = timezone.now()
     return render_to_response("base.html", dict(albums=albums, user=request.user,
-                                                media_url=MEDIA_URL, images=images, time=time))
-
+                                                media_url=MEDIA_URL, images=images))
 def login(request):
     args = {}
     args.update(csrf(request))
@@ -46,12 +43,10 @@ def login(request):
 
     else:
         return render_to_response('main.html', args)
-
-
 def logout(request):
     auth.logout(request)
     return redirect('/')
-
+#TODO:DO COMMENTARIES
 def addComment(request, pk):
     if request.method == "POST":
         form = CommentForm(request.POST)
@@ -78,10 +73,9 @@ def addPhoto(request):
         form = PhotoForm()
         args['form'] = form
     return render_to_response('addphoto.html',args)
-
-
 def album(request, pk):
     """Album listing."""
+    #TODO: Bug - user must not  create albums with same name,create a widget in user albumaddform
     album = get_object_or_404(Album, pk=pk)
     if not album.public and not request.user.is_authenticated():
         return HttpResponse("Error: you need to be logged in to view this album.")
@@ -112,3 +106,12 @@ def addlike(request, img_id):
             a.likes -= 1
             a.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+def show_your_albums(request):
+    args= {}
+    user=request.user
+    alb = Album.objects.all().filter(created_by=user)
+    img1 = Image.objects.filter(user=user).first()
+    args['albums'] = alb
+    #args['user'] = user
+    args['image'] = img1
+    return render_to_response('yalbums.html', args)

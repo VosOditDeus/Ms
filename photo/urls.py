@@ -13,4 +13,5 @@ urlpatterns = patterns('',
                        url(r"^album/(?P<pk>\d)$", "photo.views.album", name='album'),
                        url(r'^addlike/(?P<img_id>\d+)/$','photo.views.addlike', name='addlike'),
                        url(r'^addPhoto/','photo.views.addPhoto', name='addPhoto'),
+                       url(r'yalbums/','photo.views.show_your_albums', name='yalbums'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

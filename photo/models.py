@@ -16,7 +16,7 @@ class Tag(models.Model):
 
 
 class Album(models.Model):
-    title = models.CharField(max_length=60)
+    title = models.CharField(max_length=60, unique=True)
     public = models.BooleanField(default=False)
     rating = models.IntegerField(default=0, blank=True, null=True, editable=False)
     created_by = models.ForeignKey(User, related_name="author", blank=True, null=True)
