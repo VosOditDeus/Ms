@@ -22,12 +22,9 @@ SECRET_KEY = ')9v93fbyh6*01n#h0j_o$42jp2u-#zs2sidvd*ks3%jpm)wd1#'
 # TODO  HIDE SECRET KEY IN local_settings.py
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -35,9 +32,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'photo'
+    'photo',
+    'registration',
 )
-
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -46,14 +43,18 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
-
 ROOT_URLCONF = 'Ms.urls'
 WSGI_APPLICATION = 'Ms.wsgi.application'
 STATIC_URL = '/static/'
 MEDIA_ROOT = '/home/vosoditdeus/PycharmProjects/Ms/'
 MEDIA_URL = '/media/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
-
+REGISTRATION_OPEN = True                # If True, users can register
+ACCOUNT_ACTIVATION_DAYS = 7     # One-week activation window; you may, of course, use a different value.
+REGISTRATION_AUTO_LOGIN = True  # If True, the user will be automatically logged in.
+LOGIN_REDIRECT_URL = '/'  # The page you want users to arrive at after they successful log in
+LOGIN_URL = '/accounts/login/'  # The page users are directed to if they are not logged in,
+                                                                # and are trying to access pages requiring                                                                              authentication
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 

@@ -1,6 +1,7 @@
-from models import Comment,Image
+from django import forms
+from models import Comment,Image, User
 from django.forms import forms, ModelForm
-
+from django.contrib.auth.forms import UserCreationForm
 
 class PhotoForm(ModelForm):
     class Meta:

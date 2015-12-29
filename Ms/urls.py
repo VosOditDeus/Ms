@@ -13,4 +13,5 @@ urlpatterns = patterns('',
                        url(r'^login', 'photo.views.login',name='login'),
                        url(r'logout', 'photo.views.logout',name='logout'),
                        url(r"^$", 'photo.views.God',name='God'),
+                       url(r'^accounts/', include('registration.backends.simple.urls')),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

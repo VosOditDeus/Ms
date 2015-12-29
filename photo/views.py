@@ -47,6 +47,7 @@ def logout(request):
     auth.logout(request)
     return redirect('/')
 #TODO:DO COMMENTARIES
+@login_required()
 def addComment(request, pk):
     if request.method == "POST":
         form = CommentForm(request.POST)
@@ -73,6 +74,7 @@ def addPhoto(request):
         form = PhotoForm()
         args['form'] = form
     return render_to_response('addphoto.html',args)
+@login_required()
 def album(request, pk):
     """Album listing."""
     #TODO: Bug - user must not  create albums with same name,create a widget in user albumaddform
@@ -93,6 +95,7 @@ def album(request, pk):
         images = paginator.page(paginator.num_pages)
     return render_to_response("album.html", dict(album=album, images=images, user=request.user,
                                                  media_url=MEDIA_URL))
+@login_required()
 def addlike(request, img_id):
     if img_id:
         a=Image.objects.get(id=img_id)
@@ -106,6 +109,7 @@ def addlike(request, img_id):
             a.likes -= 1
             a.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+@login_required()
 def show_your_albums(request):
     args= {}
     user=request.user
@@ -115,3 +119,4 @@ def show_your_albums(request):
     #args['user'] = user
     args['image'] = img1
     return render_to_response('yalbums.html', args)
+#TODO: THIS IS BASED, REWORK COMPLITE
