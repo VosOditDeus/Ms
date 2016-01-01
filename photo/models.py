@@ -43,7 +43,6 @@ class Image(models.Model):
     thumbnail2 = models.ImageField(upload_to="media/", blank=True, null=True)
     liked_persons = models.ManyToManyField(User, related_name='follows', symmetrical=False, blank=True)
     likes = models.IntegerField(default=0)
-
     def __unicode__(self):
         return self.image.name
 
