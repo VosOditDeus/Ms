@@ -50,11 +50,7 @@
             </ul>
             <ul class="nav navbar -nav navbar-right">
                 <li class="float-right"><a href="{% url 'registration_register' %}">Registration</a></li>
-                {% if user.is_authenticated %}
-                    <li class="float-right"><a href="{% url 'logout' %}">Logout({{ user.get_username }})</a></li>
-                {% else %}
-                    <li class="float-left"><a href="{% url 'login' %}">Login</a></li>
-                {% endif %}
+
             </ul>
         </div>
     </div>
@@ -129,6 +125,7 @@
     </div>
 
     <div class="jumbotron">
+        {% block title %}{% endblock %}
         {% block login %}{% endblock %}
         {% block content %}{% endblock %}
     </div>

@@ -26,6 +26,7 @@ def God(request):
         album.images = album.image_set.all()
     return render_to_response("base.html", dict(albums=albums, user=request.user,
                                                 media_url=MEDIA_URL, images=images))
+'''
 def login(request):
     args = {}
     args.update(csrf(request))
@@ -46,6 +47,7 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+    '''
 #TODO:DO COMMENTARIES
 @login_required()
 def addComment(request, pk):
@@ -119,4 +121,3 @@ def show_your_albums(request):
     #args['user'] = user
     args['image'] = img1
     return render_to_response('yalbums.html', args)
-#TODO: THIS IS BASED, REWORK COMPLITE
