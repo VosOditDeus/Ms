@@ -20,8 +20,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = ')9v93fbyh6*01n#h0j_o$42jp2u-#zs2sidvd*ks3%jpm)wd1#'
 # TODO  HIDE SECRET KEY IN local_settings.py
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-TEMPLATE_DEBUG = False
+DEBUG = True
+TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = ['*']
 # Application definition
 INSTALLED_APPS = (
@@ -104,10 +104,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'vosoditdeus@gmail.com'
 EMAIL_HOST_PASSWORD = 'dmkqfemgrktkafrq'
 EMAIL_PORT = 587
-REGISTRATION_EMAIL_HTML=True
 ACCOUNT_ACTIVATION_DAYS = 7
-REGISTRATION_AUTO_LOGIN = True
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 EMAIL_USE_TLS = True
-REGISTRATION_OPEN=True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
