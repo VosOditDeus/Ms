@@ -5,11 +5,13 @@
     <div class="title">{{ album.title }}</div>
     <ul>
         {% for img in images %}
+            {% if img.approved %}
             <div>
             <span style=""><h6>{{ img.title }}</h6></span></div>
             <a href="{{ media_url }}{{ img.image.name }}"><img border="0" alt=""
                 src="{{ media_url }}{{ img.thumbnail2 }}"/></a>
             <a href="/photo/addlike/{{ img.id }}"><i class="glyphicon glyphicon-thumbs-up"></i></a>{{ img.likes }}
+            {% endif %}
             {# TODO:Write normal thumbnail or something to prewiew images on 300+ #}
         {% endfor %}
     <!-- Next/Prev page links  -->

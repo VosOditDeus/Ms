@@ -20,6 +20,7 @@ class Album(models.Model):
     public = models.BooleanField(default=False)
     rating = models.IntegerField(default=0, blank=True, null=True, editable=False)
     created_by = models.ForeignKey(User, related_name="author", blank=True, null=True)
+    approved = models.BooleanField(default=False)
     def __unicode__(self):
         return self.title
 
@@ -43,6 +44,7 @@ class Image(models.Model):
     thumbnail2 = models.ImageField(upload_to="media/", blank=True, null=True)
     liked_persons = models.ManyToManyField(User, related_name='follows', symmetrical=False, blank=True)
     likes = models.IntegerField(default=0)
+    approved = models.BooleanField(default=False)
     def __unicode__(self):
         return self.image.name
 

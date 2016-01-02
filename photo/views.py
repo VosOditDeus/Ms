@@ -8,7 +8,7 @@ from models import *
 from forms import *
 # coding: utf-8
 def God(request):
-    albums = Album.objects.all()
+    albums = Album.objects.all().filter(approved=True)
     images = Image.objects.all()
     if not request.user.is_authenticated():
         albums = albums.filter(public=True)
@@ -26,39 +26,6 @@ def God(request):
         album.images = album.image_set.all()
     return render_to_response("base.html", dict(albums=albums, user=request.user,
                                                 media_url=MEDIA_URL, images=images))
-'''
-def login(request):
-    args = {}
-    args.update(csrf(request))
-    if request.POST:
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = auth.authenticate(username=username, password=password)
-        if user is not None:
-            auth.login(request, user)
-            args['user'] = auth.get_user(request)
-            return redirect('/', args)
-        else:
-            args['login_error'] ="Not found"
-            return render_to_response('main.html', args)
-
-    else:
-        return render_to_response('main.html', args)
-def logout(request):
-    auth.logout(request)
-    return redirect('/')
-    '''
-#TODO:DO COMMENTARIES
-@login_required()
-def addComment(request, pk):
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.poste_to.get(pk=pk)
-            comment.save()
-            form.save()
-    return redirect('/image/%s' % pk)
 #TODO: REWORK LOGIN SYSTEM, BUG WITH SESSIONS
 @login_required()
 def addPhoto(request):
@@ -76,7 +43,6 @@ def addPhoto(request):
         form = PhotoForm()
         args['form'] = form
     return render_to_response('addphoto.html',args)
-@login_required()
 def album(request, pk):
     """Album listing."""
     #TODO: Bug - user must not  create albums with same name,create a widget in user albumaddform
@@ -84,8 +50,7 @@ def album(request, pk):
     if not album.public and not request.user.is_authenticated():
         return HttpResponse("Error: you need to be logged in to view this album.")
 
-    images = album.image_set.all().order_by('-likes')
-    print images
+    images = album.image_set.all()
     paginator = Paginator(images, 30)
     try:
         page = int(request.GET.get("page", '1'))
@@ -94,13 +59,10 @@ def album(request, pk):
 
     try:
         images = paginator.page(page)
-        print images
     except (InvalidPage, EmptyPage):
         images = paginator.page(paginator.num_pages)
-        print images
     return render_to_response("album.html", dict(album=album, images=images, user=request.user,
                                                  media_url=MEDIA_URL))
-@login_required()
 def addlike(request, img_id):
     if img_id:
         a=Image.objects.get(id=img_id)
@@ -114,7 +76,6 @@ def addlike(request, img_id):
             a.likes -= 1
             a.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-@login_required()
 def show_your_albums(request):
     args= {}
     user=request.user
@@ -124,4 +85,3 @@ def show_your_albums(request):
     #args['user'] = user
     args['image'] = img1
     return render_to_response('yalbums.html', args)
-#TODO: Email must me unique, to prevent bots.

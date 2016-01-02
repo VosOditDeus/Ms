@@ -8,7 +8,7 @@ class AlbumAdmin(admin.ModelAdmin):
 
 class ImageAdmin(admin.ModelAdmin):
     # search_fields = ["title"]
-    list_display = ["title", "user", "size", "tags_",
+    list_display = ["title", "user", "size", "tags_",'approved',
                     "created", 'thumbnail']
     list_filter = ["tags", "albums"]
     exclude = ['likes', 'liked_persons', 'thumbnail2']
