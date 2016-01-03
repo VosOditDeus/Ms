@@ -17,12 +17,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')9v93fbyh6*01n#h0j_o$42jp2u-#zs2sidvd*ks3%jpm)wd1#'
+
 # TODO  HIDE SECRET KEY IN local_settings.py
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = ['*']
+
 # Application definition
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -53,18 +51,6 @@ MEDIA_URL = '/media/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-    # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'Try',  # Or path to database file if using sqlite3.
-        'USER': 'root',  # Not used with sqlite3.
-        'PASSWORD': '',  # Not used with sqlite3.
-        'HOST': '',  # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',  # Set to empty string for default. Not used with sqlite3.
-    }
-}
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -99,14 +85,4 @@ TEMPLATES = [
         },
     },
 ]
-
-EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'vosoditdeus@gmail.com'
-EMAIL_HOST_PASSWORD = 'dmkqfemgrktkafrq'
-EMAIL_PORT = 587
-ACCOUNT_ACTIVATION_DAYS = 7
-SITE_ID = 1
-LOGIN_REDIRECT_URL = '/'
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+from local_settings import *

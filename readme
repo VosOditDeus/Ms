@@ -1,0 +1,2 @@
+1)create your local_setting file, where you will store Db, secret key,debug mode, allowed hosts, email settins.
+2)Migrate
