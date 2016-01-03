@@ -1,5 +1,5 @@
-from django.shortcuts import render_to_response, redirect,HttpResponse,HttpResponseRedirect,get_object_or_404
-from django.contrib import auth
+from django.core.urlresolvers import reverse
+from django.shortcuts import render_to_response, redirect,HttpResponse,HttpResponseRedirect,get_object_or_404,Http404
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -32,13 +32,17 @@ def addPhoto(request):
     args = {}
     args.update(csrf(request))
     if request.method == "POST":
-        form = PhotoForm(request.POST, files=request.FILES)
+        form = PhotoForm(request.POST, request.FILES)
         if form.is_valid():
             img = form.save(commit=False)
             img.user = request.user
             img.save()
             form.save_m2m()
-            return redirect('/')
+            return HttpResponseRedirect(reverse('addPhoto'))
+        else:
+            args['errors']=form.errors
+            args['form'] = form
+            return render_to_response('addphoto.html',args)
     else:
         form = PhotoForm()
         args['form'] = form

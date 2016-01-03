@@ -1,4 +1,5 @@
 from django.db import models
+from taggit.managers import TaggableManager
 from django.core.files import File
 from django.contrib.auth.models import User
 from tempfile import NamedTemporaryFile
@@ -8,11 +9,6 @@ from PIL import Image as PImage
 from Ms.settings import MEDIA_ROOT
 
 # -*- coding: utf-8 -*-
-class Tag(models.Model):
-    tag = models.CharField(max_length=50)
-
-    def __unicode__(self):
-        return self.tag
 
 
 class Album(models.Model):
@@ -35,7 +31,6 @@ class Album(models.Model):
 class Image(models.Model):
     title = models.CharField(max_length=60, blank=True, null=True)
     image = models.ImageField(upload_to="media/")
-    tags = models.ManyToManyField(Tag, blank=True)
     albums = models.ManyToManyField(Album, blank=True)
     user = models.ForeignKey(User, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -45,6 +40,7 @@ class Image(models.Model):
     liked_persons = models.ManyToManyField(User, related_name='follows', symmetrical=False, blank=True)
     likes = models.IntegerField(default=0)
     approved = models.BooleanField(default=False)
+    tags = TaggableManager()
     def __unicode__(self):
         return self.image.name
 
