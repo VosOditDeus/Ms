@@ -1,0 +1,20 @@
+{% extends 'base1.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="main">
+    <h1>{{ cat.title }}</h1>
+    <br>
+    {% for i in images %}
+        <ul>
+        <a href="{% url 'image' i.id %}">{{ i.title}}<img src="{{ media_url }}{{ i.image.name }}"
+                                                          {% if i.width > 400 %}width="400"{% endif %}/></a>
+        </ul>
+    {% endfor %}
+    <br>
+    {% for a in albums %}
+        {% if a.approved %}
+            <a href="{% url 'album' a.pk %}">{{ a.title }}</a>
+        {% endif %}
+    {% endfor %}
+    </div>
+{% endblock %}
