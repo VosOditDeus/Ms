@@ -131,3 +131,17 @@ def update(request):
         form = ImageChangeForm()
         args['form'] = form
     return render_to_response('image.html', args)
+
+
+def categories_detail(request,cat_pk):
+    Cat=Categories.objects.get(pk=cat_pk)
+    images = Cat.images.all()
+    albums = Cat.albums.all()
+    args ={}
+    args.update(csrf(request))
+    args['cat']=Cat
+    args['images']=images
+    args['albums']=albums
+    args['backurl']=request.META.get("HTTP_REFERER")
+    args['media_url']=MEDIA_URL
+    return render_to_response('categories_detail',args)

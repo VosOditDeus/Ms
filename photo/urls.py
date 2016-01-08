@@ -13,5 +13,6 @@ urlpatterns = patterns('',
                        url(r'yalbums/','photo.views.show_your_albums', name='yalbums'),
                        url(r'image/(\d+)/$', 'photo.views.image', name='image'),
                        url(r'image/(\d+)/(full|edit)/$', 'photo.views.image', name='image'),
-                       url(r"update/$", "photo.views.update", name='update'),
+                       url(r'update/$','photo.views.update', name='update'),
+                       url(r'^cat_details/(?P<cat_pk>\d+)/$','photo.views.categories_detail', name='cat_detail'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

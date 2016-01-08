@@ -6,6 +6,9 @@
     <div class="main">
         <!--Albums-->
         <ul>
+            {% for cat in categories %}
+                <a href="{% url 'cat_detail' cat.pk %}">{{cat.title}}</a>
+            {% endfor %}
             {% for album in albums.object_list %}
                 <div class="title"><a href="photo/album/{{ album.pk }}">{{ album.title }}</a>
                     ({{ album.images.count }} images)</div>
