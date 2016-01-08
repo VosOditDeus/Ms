@@ -10,6 +10,6 @@ urlpatterns = patterns('',
 
                        url(r'^admin/', include(admin.site.urls)),
                        (r'^photo/', include('photo.urls')),
-                       url(r"^$", 'photo.views.God',name='God'),
+                       url(r"^$", 'photo.views.God', name='God'),
                        (r'^accounts/', include('registration.backends.default.urls')),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

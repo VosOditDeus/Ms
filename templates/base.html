@@ -9,6 +9,13 @@
             {% for cat in categories %}
                 <a href="{% url 'cat_detail' cat.pk %}">{{cat.title}}</a>
             {% endfor %}
+            {% for ls in last %}
+                <a href="{{ media_url }}{{ ls.image.name }}">
+                        {% if ls.approved   %}
+                        <a href="{% url 'image' ls.id %}">
+                            <img border="0" alt="" src="{{ media_url }}{{ ls.image.name }}" height="100"/></a>
+                        {% endif %}
+            {% endfor %}
             {% for album in albums.object_list %}
                 <div class="title"><a href="photo/album/{{ album.pk }}">{{ album.title }}</a>
                     ({{ album.images.count }} images)</div>

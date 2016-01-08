@@ -1,18 +1,19 @@
-from collections import defaultdict
-
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response, redirect,HttpResponse,HttpResponseRedirect,get_object_or_404,Http404
+from django.shortcuts import render_to_response, redirect, HttpResponse, HttpResponseRedirect, get_object_or_404, \
+    Http404
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from Ms.settings import MEDIA_URL
 from models import *
 from forms import *
+from datetime import datetime
 # coding: utf-8
 def God(request):
-    albums = Album.objects.all().filter(approved=True)[:10]
-    categories = Categories.objects.all()[:10]
-    images = Image.objects.all()[:10]
+    albums = Album.objects.all().filter(approved=True)
+    categories = Categories.objects.all()
+    images = Image.objects.all()
+    last_photos = images.filter(created=datetime.today())
     args = {}
     args.update(csrf(request))
     if not request.user.is_authenticated():
@@ -29,13 +30,16 @@ def God(request):
 
     for album in albums.object_list:
         album.images = album.image_set.all()
-    args['albums']=albums
-    args['categories']=categories
-    args['images']=images
-    args['user']=request.user
-    args['media_url']=MEDIA_URL
-    return render_to_response("base.html",args)
-#TODO: REWORK LOGIN SYSTEM, BUG WITH SESSIONS
+    args['albums'] = albums
+    args['categories'] = categories
+    args['images'] = images
+    args['user'] = request.user
+    args['media_url'] = MEDIA_URL
+    args['last'] = last_photos
+    return render_to_response("base.html", args)
+
+
+# TODO: REWORK LOGIN SYSTEM, BUG WITH SESSIONS
 @login_required()
 def addPhoto(request):
     args = {}
@@ -49,16 +53,18 @@ def addPhoto(request):
             form.save_m2m()
             return HttpResponseRedirect(reverse('addPhoto'))
         else:
-            args['errors']=form.errors
+            args['errors'] = form.errors
             args['form'] = form
-            return render_to_response('addphoto.html',args)
+            return render_to_response('addphoto.html', args)
     else:
         form = PhotoForm()
         args['form'] = form
-    return render_to_response('addphoto.html',args)
+    return render_to_response('addphoto.html', args)
+
+
 def album(request, pk):
     """Album listing."""
-    #TODO: Bug - user must not  create albums with same name,create a widget in user albumaddform
+    # TODO: Bug - user must not  create albums with same name,create a widget in user albumaddform
     album = get_object_or_404(Album, pk=pk)
     if not album.public and not request.user.is_authenticated():
         return HttpResponse("Error: you need to be logged in to view this album.")
@@ -76,10 +82,12 @@ def album(request, pk):
         images = paginator.page(paginator.num_pages)
     return render_to_response("album.html", dict(album=album, images=images, user=request.user,
                                                  media_url=MEDIA_URL))
+
+
 def addlike(request, img_id):
     if img_id:
-        a=Image.objects.get(id=img_id)
-        ifliked=a.liked_persons.filter(username=request.user).exists()
+        a = Image.objects.get(id=img_id)
+        ifliked = a.liked_persons.filter(username=request.user).exists()
         if not ifliked:
             a.liked_persons.add(request.user)
             a.likes += 1
@@ -89,28 +97,32 @@ def addlike(request, img_id):
             a.likes -= 1
             a.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 def show_your_albums(request):
-    args= {}
-    user=request.user
+    args = {}
+    user = request.user
     alb = Album.objects.all().filter(created_by=user)
     img1 = Image.objects.filter(user=user).first()
     args['albums'] = alb
-    #args['user'] = user
+    # args['user'] = user
     args['image'] = img1
     return render_to_response('yalbums.html', args)
 
-def image(request,id):
-    img =Image.objects.get(id=id)
-    album=Album.objects.all()
-    args ={}
+
+def image(request, id):
+    img = Image.objects.get(id=id)
+    album = Album.objects.all()
+    args = {}
     args.update(csrf(request))
     args['form'] = ImageChangeForm()
-    args['albums']=album
-    args['user']=request.user
-    args['image']=img
-    args['backurl']=request.META.get("HTTP_REFERER")
-    args['media_url']=MEDIA_URL
+    args['albums'] = album
+    args['user'] = request.user
+    args['image'] = img
+    args['backurl'] = request.META.get("HTTP_REFERER")
+    args['media_url'] = MEDIA_URL
     return render_to_response('image.html', args)
+
 
 def update(request):
     args = {}
@@ -133,15 +145,18 @@ def update(request):
     return render_to_response('image.html', args)
 
 
-def categories_detail(request,cat_pk):
-    Cat=Categories.objects.get(pk=cat_pk)
-    images = Cat.images.all()
+def categories_detail(request, cat_pk):
+    Cat = Categories.objects.get(pk=cat_pk)
+    images = Cat.images.all().filter()
     albums = Cat.albums.all()
-    args ={}
+    if not request.user.is_authenticated():
+        albums = albums.filter(public=True)
+    args = {}
     args.update(csrf(request))
-    args['cat']=Cat
-    args['images']=images
-    args['albums']=albums
-    args['backurl']=request.META.get("HTTP_REFERER")
-    args['media_url']=MEDIA_URL
-    return render_to_response('categories_detail',args)
+    args['cat'] = Cat
+    args['images'] = images
+    args['albums'] = albums
+    args['backurl'] = request.META.get("HTTP_REFERER")
+    args['media_url'] = MEDIA_URL
+    args['user']=request.user
+    return render_to_response('categories_detail', args)

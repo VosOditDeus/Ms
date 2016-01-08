@@ -53,7 +53,6 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -85,4 +84,7 @@ TEMPLATES = [
         },
     },
 ]
-from local_settings import *
+try:
+    from local_settings import *
+except ImportError:
+    pass
