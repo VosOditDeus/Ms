@@ -11,4 +11,7 @@ urlpatterns = patterns('',
                        url(r'^addlike/(?P<img_id>\d+)/$','photo.views.addlike', name='addlike'),
                        url(r'^addPhoto/','photo.views.addPhoto', name='addPhoto'),
                        url(r'yalbums/','photo.views.show_your_albums', name='yalbums'),
+                       url(r'image/(\d+)/$', 'photo.views.image', name='image'),
+                       url(r'image/(\d+)/(full|edit)/$', 'photo.views.image', name='image'),
+                       url(r"update/$", "photo.views.update", name='update'),
                        ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

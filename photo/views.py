@@ -10,8 +10,11 @@ from models import *
 from forms import *
 # coding: utf-8
 def God(request):
-    albums = Album.objects.all().filter(approved=True)
-    images = Image.objects.all()
+    albums = Album.objects.all().filter(approved=True)[:10]
+    categories = Categories.objects.all()[:10]
+    images = Image.objects.all()[:10]
+    args = {}
+    args.update(csrf(request))
     if not request.user.is_authenticated():
         albums = albums.filter(public=True)
     paginator = Paginator(albums, 2)
@@ -26,8 +29,12 @@ def God(request):
 
     for album in albums.object_list:
         album.images = album.image_set.all()
-    return render_to_response("base.html", dict(albums=albums, user=request.user,
-                                                media_url=MEDIA_URL, images=images))
+    args['albums']=albums
+    args['categories']=categories
+    args['images']=images
+    args['user']=request.user
+    args['media_url']=MEDIA_URL
+    return render_to_response("base.html",args)
 #TODO: REWORK LOGIN SYSTEM, BUG WITH SESSIONS
 @login_required()
 def addPhoto(request):
