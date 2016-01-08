@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect,HttpResponse,HttpResponseRedirect,get_object_or_404,Http404
 from django.core.context_processors import csrf
@@ -89,3 +91,36 @@ def show_your_albums(request):
     #args['user'] = user
     args['image'] = img1
     return render_to_response('yalbums.html', args)
+
+def image(request,id):
+    img =Image.objects.get(id=id)
+    album=Album.objects.all()
+    args ={}
+    args.update(csrf(request))
+    args['form'] = ImageChangeForm()
+    args['albums']=album
+    args['user']=request.user
+    args['image']=img
+    args['backurl']=request.META.get("HTTP_REFERER")
+    args['media_url']=MEDIA_URL
+    return render_to_response('image.html', args)
+
+def update(request):
+    args = {}
+    args.update(csrf(request))
+    if request.method == "POST":
+        form = ImageChangeForm(request.POST)
+        if form.is_valid():
+            img = form.save(commit=True)
+            img.user = request.user
+            img.save()
+            form.save_m2m()
+            return HttpResponseRedirect(reverse('update'))
+        else:
+            args['errors'] = form.errors
+            args['form'] = form
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        form = ImageChangeForm()
+        args['form'] = form
+    return render_to_response('image.html', args)

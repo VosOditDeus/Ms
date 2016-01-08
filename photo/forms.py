@@ -7,3 +7,7 @@ class PhotoForm(ModelForm):
     class Meta:
         model = Image
         fields = ['image', 'title', 'tags', 'albums']
+class ImageChangeForm(ModelForm):
+    class Meta:
+        model = Image
+        fields = ['title', 'tags', 'albums']
