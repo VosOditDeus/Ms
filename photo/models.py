@@ -83,3 +83,17 @@ class Comment(models.Model):
     text = models.CharField(max_length=200, blank=True, null=True, verbose_name='Comment')
     posted_by = models.OneToOneField(User)
     posted_to = models.ForeignKey(Image, null=True, blank=False)
+
+    def __unicode__(self):
+        return self.posted_by
+class Categories(models.Model):
+    title = models.CharField(max_length=200)
+    images = models.ManyToManyField(Image)
+    albums = models.ManyToManyField(Album)
+
+    def __unicode__(self):
+        return self.title
+    def get_images(self):
+        return "\n".join([p.title for p in self.images.all()])
+    def get_albums(self):
+        return "\n".join([p.title for p in self.albums.all()])
