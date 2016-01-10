@@ -42,7 +42,7 @@
               <ul class="nav navbar-nav">
                 <li class="menuItem"><a href="{% url "addPhoto" %}">Upload your Picture</a></li>
                   {% if user.is_authenticated %}
-                    <li class="menuItem"><a href="{% url 'yalbums' %}">Show your Albums</a></li>
+                    <li class="menuItem"><a href="{% url 'youpic' %}">Show your Albums</a></li>
                 {% endif %}
                 <li class="menuItem"><a href="#">Browse other Albums</a></li>
               </ul>

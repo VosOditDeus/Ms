@@ -29,7 +29,7 @@ class Album(models.Model):
 
 
 class Image(models.Model):
-    title = models.CharField(max_length=60, blank=True, null=True)
+    title = models.CharField(max_length=60, default='#')
     image = models.ImageField(upload_to="media/")
     albums = models.ManyToManyField(Album, blank=True)
     user = models.ForeignKey(User, null=True, blank=True)

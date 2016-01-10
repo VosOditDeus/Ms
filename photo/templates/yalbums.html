@@ -4,15 +4,11 @@
     <a href="#"><p>{{ user }}</p></a>
 <div class ="main">
         <!--Albums-->
-        <ul>
-            {% for album in albums %}
-                <div class="title"><a href="{% url 'album' album.pk  %}">{{ album.title }}</a>
-                    <!--({{ album.images.count }} images)--></div>
-                <ul>
-                    <a href="/media/{{ media_url }}{{ image.image.name }}">
-                <img border="0" alt="" src="/media/{{ media_url }}{{ image.image.name }}" height="100"/></a>
+                    {% for img in image %}
+                        <ul>
+                    <a href="/media/{{ media_url }}{{ img.image.name }}">
+                <img border="0" alt="" src="/media/{{ media_url }}{{ img.image.name }}" height="100"/></a>
                 </ul>
-            {% endfor %}
-        </ul>
+                    {% endfor %}
     </div>
 {% endblock %}

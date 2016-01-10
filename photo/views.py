@@ -61,7 +61,6 @@ def addPhoto(request):
         args['form'] = form
     return render_to_response('addphoto.html', args)
 
-
 def album(request, pk):
     """Album listing."""
     # TODO: Bug - user must not  create albums with same name,create a widget in user albumaddform
@@ -99,14 +98,10 @@ def addlike(request, img_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-def show_your_albums(request):
+def show_your_pictures(request):
     args = {}
-    user = request.user
-    alb = Album.objects.all().filter(created_by=user)
-    img1 = Image.objects.filter(user=user).first()
-    args['albums'] = alb
-    # args['user'] = user
-    args['image'] = img1
+    img = Image.objects.all().filter(user=request.user)
+    args['image'] = img
     return render_to_response('yalbums.html', args)
 
 
@@ -151,6 +146,7 @@ def categories_detail(request, cat_pk):
     albums = Cat.albums.all()
     if not request.user.is_authenticated():
         albums = albums.filter(public=True)
+        images = images.filter(approved=True)
     args = {}
     args.update(csrf(request))
     args['cat'] = Cat
