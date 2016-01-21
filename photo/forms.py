@@ -5,8 +5,8 @@ from django.forms import forms, ModelForm
 class PhotoForm(ModelForm):
     class Meta:
         model = Image
-        fields = ['image', 'title', 'tags', 'albums']
+        fields = ['image', 'title', 'tags']
 class ImageChangeForm(ModelForm):
     class Meta:
         model = Image
-        fields = ['title', 'tags', 'albums']
+        fields = ['title', 'tags']

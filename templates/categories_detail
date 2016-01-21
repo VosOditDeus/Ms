@@ -13,10 +13,5 @@
         {% endif %}
     {% endfor %}
     <br>
-    {% for a in albums %}
-        {% if a.approved %}
-            <a href="{% url 'album' a.pk %}">{{ a.title }}</a>
-        {% endif %}
-    {% endfor %}
     </div>
 {% endblock %}

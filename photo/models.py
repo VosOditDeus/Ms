@@ -7,31 +7,10 @@ from string import join
 import os
 from PIL import Image as PImage
 from Ms.settings import MEDIA_ROOT
-
 # -*- coding: utf-8 -*-
-
-
-class Album(models.Model):
-    title = models.CharField(max_length=60, unique=True)
-    public = models.BooleanField(default=False)
-    rating = models.IntegerField(default=0, blank=True, null=True, editable=False)
-    created_by = models.ForeignKey(User, related_name="author", blank=True, null=True)
-    approved = models.BooleanField(default=False)
-    def __unicode__(self):
-        return self.title
-
-    def images(self):
-        lst = [x.image.name for x in self.image_set.all()]
-        lst = ["<a href='/media/%s'>%s</a>" % (x, x.split('/')[-1]) for x in lst]
-        return join(lst, ', ')
-
-    images.allow_tags = True
-
-
 class Image(models.Model):
     title = models.CharField(max_length=60, default='#')
-    image = models.ImageField(upload_to="media/")
-    albums = models.ManyToManyField(Album, blank=True)
+    image = models.ImageField(upload_to="media/", verbose_name="Image")
     user = models.ForeignKey(User, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     width = models.IntegerField(blank=True, null=True)
@@ -77,21 +56,11 @@ class Image(models.Model):
     thumbnail.allow_tags = True
 
 
-class Comment(models.Model):
-    text = models.CharField(max_length=200, blank=True, null=True, verbose_name='Comment')
-    posted_by = models.OneToOneField(User)
-    posted_to = models.ForeignKey(Image, null=True, blank=False)
-
-    def __unicode__(self):
-        return self.posted_by
 class Categories(models.Model):
     title = models.CharField(max_length=200)
     images = models.ManyToManyField(Image)
-    albums = models.ManyToManyField(Album)
 
     def __unicode__(self):
         return self.title
     def get_images(self):
         return "\n".join([p.title for p in self.images.all()])
-    def get_albums(self):
-        return "\n".join([p.title for p in self.albums.all()])
