@@ -10,6 +10,8 @@ from forms import *
 from datetime import datetime
 from django.core.mail import send_mail
 from Ms.local_settings import EMAIL_HOST_USER
+
+
 # coding: utf-8
 def God(request):
     categories = Categories.objects.all()
@@ -36,7 +38,7 @@ def God(request):
 
 # TODO: REWORK LOGIN SYSTEM, BUG WITH SESSIONS ON OTHER PAGES
 @login_required()
-#TODO: Broken SHIT
+# TODO: Broken SHIT
 def addPhoto(request):
     args = {}
     args.update(csrf(request))
@@ -47,7 +49,7 @@ def addPhoto(request):
             img.user = request.user
             title = form.cleaned_data.get("title")
             if not img.title:
-                title ='#'
+                title = '#'
             img.title = title
             img.save()
             form.save_m2m()
@@ -60,6 +62,7 @@ def addPhoto(request):
         form = PhotoForm()
         args['form'] = form
     return render_to_response('addphoto.html', args)
+
 
 def addlike(request, img_id):
     if img_id:
@@ -74,6 +77,8 @@ def addlike(request, img_id):
             a.likes -= 1
             a.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 def show_your_pictures(request):
     args = {}
     img = Image.objects.all().filter(user=request.user)
@@ -127,14 +132,16 @@ def categories_detail(request, cat_pk):
     args['images'] = images
     args['backurl'] = request.META.get("HTTP_REFERER")
     args['media_url'] = MEDIA_URL
-    args['user']=request.user
+    args['user'] = request.user
     return render_to_response('categories_detail', args)
+
+
 def contact(request):
     form = ContactForm(request.POST or None)
     if form.is_valid():
-        subject='HALP'
+        subject = 'HALP'
         contact_massage = form.cleaned_data.get('text')
-        from_email=EMAIL_HOST_USER
+        from_email = EMAIL_HOST_USER
         to_email = [form.cleaned_data.get('email')]
         send_mail(subject,
                   contact_massage,
@@ -143,5 +150,5 @@ def contact(request):
                   fail_silently=False)
         # for key,value in form.cleaned_data.iteritems():
         #     print key,value
-    context = {'form':form}
-    return render(request,'cus.html',context)
+    context = {'form': form}
+    return render(request, 'cus.html', context)

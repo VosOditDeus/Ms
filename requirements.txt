@@ -6,4 +6,7 @@ Pillow-PIL==0.1.dev.0
 PyMySQL==0.6.7
 PyMySQL3==0.5
 django-bootstrap3==6.2.2
-
+django-taggit
+django-registration
+django-registration-redux
+django-crispy-forms

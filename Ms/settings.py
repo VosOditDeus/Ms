@@ -30,9 +30,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'photo',
+    #third party
     'registration',
     'taggit',
+    'crispy_forms',
+    #my apps
+    'photo',
 )
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -50,6 +53,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static",'static_root')
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "static",'media_root')#os.path.dirname(BASE_DIR) - if need to put it outside of project dir
 MEDIA_URL = '/media/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 #ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
