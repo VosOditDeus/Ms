@@ -1,2 +1,4 @@
 1)create your local_setting file, where you will store Db, secret key,debug mode, allowed hosts, email settins.
-2)Migrate
+2)Create static folder, and  2 root there - 'static_root','media_root'.
+3)collectstatic in manager.py
+4)migrate in manager.py

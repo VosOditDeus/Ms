@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect, HttpResponse, HttpResponseRedirect, get_object_or_404, \
-    Http404
+    Http404, render
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -8,6 +8,8 @@ from Ms.settings import MEDIA_URL
 from models import *
 from forms import *
 from datetime import datetime
+from django.core.mail import send_mail
+from Ms.local_settings import EMAIL_HOST_USER
 # coding: utf-8
 def God(request):
     categories = Categories.objects.all()
@@ -43,6 +45,10 @@ def addPhoto(request):
         if form.is_valid():
             img = form.save(commit=False)
             img.user = request.user
+            title = form.cleaned_data.get("title")
+            if not img.title:
+                title ='#'
+            img.title = title
             img.save()
             form.save_m2m()
             return HttpResponseRedirect(reverse('addPhoto'))
@@ -68,12 +74,12 @@ def addlike(request, img_id):
             a.likes -= 1
             a.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
 def show_your_pictures(request):
     args = {}
     img = Image.objects.all().filter(user=request.user)
+    da = img.filter(created=datetime.today())
     args['image'] = img
+    args['da'] = da
     return render_to_response('ypic.html', args)
 
 
@@ -112,7 +118,7 @@ def update(request):
 
 def categories_detail(request, cat_pk):
     Cat = Categories.objects.get(pk=cat_pk)
-    images = Cat.images.all().filter()
+    images = Cat.images.all()
     if not request.user.is_authenticated():
         images = images.filter(approved=True)
     args = {}
@@ -123,3 +129,19 @@ def categories_detail(request, cat_pk):
     args['media_url'] = MEDIA_URL
     args['user']=request.user
     return render_to_response('categories_detail', args)
+def contact(request):
+    form = ContactForm(request.POST or None)
+    if form.is_valid():
+        subject='HALP'
+        contact_massage = form.cleaned_data.get('text')
+        from_email=EMAIL_HOST_USER
+        to_email = [form.cleaned_data.get('email')]
+        send_mail(subject,
+                  contact_massage,
+                  from_email,
+                  to_email,
+                  fail_silently=False)
+        # for key,value in form.cleaned_data.iteritems():
+        #     print key,value
+    context = {'form':form}
+    return render(request,'cus.html',context)

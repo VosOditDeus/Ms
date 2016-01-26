@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
-
+# coding: utf-8
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import djcelery
@@ -45,14 +45,16 @@ MIDDLEWARE_CLASSES = (
 )
 ROOT_URLCONF = 'Ms.urls'
 WSGI_APPLICATION = 'Ms.wsgi.application'
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static",'static_root')
 STATIC_URL = '/static/'
-MEDIA_ROOT = '/home/vosoditdeus/PycharmProjects/Ms/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "static",'media_root')#os.path.dirname(BASE_DIR) - if need to put it outside of project dir
 MEDIA_URL = '/media/'
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+#ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 # Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
+# https://docs.djangoproject.com/en/1.9/topics/i18n/
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -67,7 +69,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
-    '/home/vosoditdeus/PycharmProjects/Ms/'
+    #'/home/vosoditdeus/PycharmProjects/Ms/'
 )
 TEMPLATES = [
     {

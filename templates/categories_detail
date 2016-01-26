@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block content %}
     <div class="main">
-    <h1>{{ cat.title }}</h1>
+    <h1>{{ cat.title }} </h1>
     <br>
     {% for i in images %}
         {% if i.approved   %}

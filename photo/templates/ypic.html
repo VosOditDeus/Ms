@@ -6,6 +6,7 @@
         <!--Albums-->
                     {% for img in image %}
                         <ul>
+                        {{ img.da }}
                     <a href="/media/{{ media_url }}{{ img.image.name }}">
                 <img border="0" alt="" src="/media/{{ media_url }}{{ img.image.name }}" height="100"/></a>
                 </ul>

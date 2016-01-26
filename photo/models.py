@@ -9,8 +9,8 @@ from PIL import Image as PImage
 from Ms.settings import MEDIA_ROOT
 # -*- coding: utf-8 -*-
 class Image(models.Model):
-    title = models.CharField(max_length=60, default='#')
-    image = models.ImageField(upload_to="media/", verbose_name="Image")
+    title = models.CharField(max_length=60)
+    image = models.ImageField(upload_to="images/", verbose_name="Image")
     user = models.ForeignKey(User, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     width = models.IntegerField(blank=True, null=True)
@@ -51,8 +51,6 @@ class Image(models.Model):
     def tags_(self):
         lst = [x[1] for x in self.tags.values_list()]
         return str(join(lst, ','))
-
-
     thumbnail.allow_tags = True
 
 
