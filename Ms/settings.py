@@ -34,6 +34,8 @@ INSTALLED_APPS = (
     'registration',
     'taggit',
     'crispy_forms',
+    'sorl.thumbnail',
+    'redis',
     #my apps
     'photo',
 )
