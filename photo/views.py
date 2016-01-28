@@ -1,16 +1,21 @@
+from django.core.files.uploadedfile import UploadedFile
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response, redirect, HttpResponse, HttpResponseRedirect, get_object_or_404, \
-    Http404, render
+from django.http import HttpResponseBadRequest
+from django.shortcuts import render_to_response, redirect, HttpResponse, HttpResponseRedirect, get_object_or_404,render
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.template import RequestContext
+from sorl.thumbnail import get_thumbnail
+
+from Ms import settings
 from Ms.settings import MEDIA_URL
 from models import *
 from forms import *
 from datetime import datetime
 from django.core.mail import send_mail
 from Ms.local_settings import EMAIL_HOST_USER
-
+import simplejson
 
 # coding: utf-8
 def God(request):
@@ -47,15 +52,14 @@ def addPhoto(request):
         if form.is_valid():
             img = form.save(commit=False)
             img.user = request.user
-            title = form.cleaned_data.get("title")
-            if not img.title:
-                title = '#'
-            img.title = title
+            # title = form.cleaned_data.get("title")
+            # if not img.title:
+            #     title = '#'
+            # img.title = title
             img.save()
             form.save_m2m()
             return HttpResponseRedirect(reverse('addPhoto'))
         else:
-            args['errors'] = form.errors
             args['form'] = form
             return render_to_response('addphoto.html', args)
     else:
@@ -66,7 +70,7 @@ def addPhoto(request):
 
 def addlike(request, img_id):
     if img_id:
-        a = Image.objects.get(id=img_id)
+        a = get_object_or_404(Image, id=img_id)
         ifliked = a.liked_persons.filter(username=request.user).exists()
         if not ifliked:
             a.liked_persons.add(request.user)
@@ -89,7 +93,7 @@ def show_your_pictures(request):
 
 
 def image(request, id):
-    img = Image.objects.get(id=id)
+    img = get_object_or_404(Image,id=id)
     args = {}
     args.update(csrf(request))
     args['form'] = ImageChangeForm()
@@ -100,29 +104,22 @@ def image(request, id):
     return render_to_response('image.html', args)
 
 
-def update(request):
-    args = {}
-    args.update(csrf(request))
-    if request.method == "POST":
-        form = ImageChangeForm(request.POST)
-        if form.is_valid():
-            img = form.save(commit=True)
-            img.user = request.user
-            img.save()
-            form.save_m2m()
-            return HttpResponseRedirect(reverse('update'))
-        else:
-            args['errors'] = form.errors
-            args['form'] = form
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    else:
-        form = ImageChangeForm()
-        args['form'] = form
-    return render_to_response('image.html', args)
+def update(request,id=None):
+    instance = get_object_or_404(Image, id=id)
+    form = ImageChangeForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        img = form.save(commit=False)
+        img.save()
+        return HttpResponseRedirect('/')#TODO: Make an absolute url to models and rewrite this shit
+    context={
+            "instance": instance,
+            "form": form
+        }
+    return render(request,'update.html',context)
 
 
 def categories_detail(request, cat_pk):
-    Cat = Categories.objects.get(pk=cat_pk)
+    Cat = get_object_or_404(Categories,pk=cat_pk)
     images = Cat.images.all()
     if not request.user.is_authenticated():
         images = images.filter(approved=True)

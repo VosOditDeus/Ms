@@ -54,7 +54,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "static",'media_root')#os.path.dirname(BASE_DIR) - if need to put it outside of project dir
 MEDIA_URL = '/media/'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'bootstrap'
 #ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases

@@ -11,10 +11,11 @@ urlpatterns = patterns('',
                        url(r'^addPhoto/', 'photo.views.addPhoto', name='addPhoto'),
                        url(r'yourpic/', 'photo.views.show_your_pictures', name='yourpic'),
                        url(r'image/(\d+)/$', 'photo.views.image', name='image'),
-                       url(r'image/(\d+)/(full|edit)/$', 'photo.views.image', name='image'),
-                       url(r'update/$', 'photo.views.update', name='update'),
+                       url(r'image/(\d+)/$', 'photo.views.image', name='image'),
+                       url(r'image/(?P<id>\d+)/update/$', 'photo.views.update', name='update'),
                        url(r'^cat_details/(?P<cat_pk>\d+)/$', 'photo.views.categories_detail',
-name='cat_detail'))
+name='cat_detail'),
+                       url(r'^multi/$','photo.views.multiuploader',name='multi'))
 if local_settings.DEBUG == "True":
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
