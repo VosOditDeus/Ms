@@ -1,22 +1,21 @@
 {% extends 'base1.html' %}
 {% load staticfiles %}
-{% load url from future %}
 {% block title %}{% endblock %}
 {% block content %}
     <div class="main">
         <ul>
             {% for cat in categories %}
-                <a href="{% url 'cat_detail' cat.pk %}">{{cat.title}}</a>
+                <a href="{% url 'cat_detail' cat.pk %}">{{cat.title}}</a><br/>
             {% endfor %}
             {% for ls in last %}
-                <a href="{{ media_url }}{{ ls.image.name }}">
+                <a href="{% url 'image' ls.id %}">{{ i.title}}}">
                         {% if ls.approved   %}
                         <a href="{% url 'image' ls.id %}">
                             <img border="0" alt="" src="{{ media_url }}{{ ls.image.name }}" height="100"/></a>
                         {% endif %}
             {% endfor %}
             {% for img in images %}
-                <a href="{{ media_url }}{{ img.image.name }}"><img border="0" alt="" src="{{ media_url }}{{ img.image.name }}" height="100"/></a></a>
+                <a href="{% url 'image' img.id %}">{{ i.title}}"><img border="0" alt="" src="{{ media_url }}{{ img.image.name }}" height="100"/></a></a>
         {% endfor %}
         <!-- Next/Prev page links  -->
         {% if images.object_list and images.paginator.num_pages > 1 %}

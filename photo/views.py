@@ -1,3 +1,4 @@
+# from django.contrib import messages
 from django.core.files.uploadedfile import UploadedFile
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseBadRequest
@@ -47,6 +48,7 @@ def God(request):
 def addPhoto(request):
     args = {}
     args.update(csrf(request))
+    form = PhotoForm(request.POST or None, request.FILES or None)
     if request.method == "POST":
         form = PhotoForm(request.POST, request.FILES)
         if form.is_valid():
@@ -110,6 +112,7 @@ def update(request,id=None):
     if form.is_valid():
         img = form.save(commit=False)
         img.save()
+        #messages.success(request, "Updated")
         return HttpResponseRedirect('/')#TODO: Make an absolute url to models and rewrite this shit
     context={
             "instance": instance,
@@ -149,3 +152,8 @@ def contact(request):
         #     print key,value
     context = {'form': form}
     return render(request, 'cus.html', context)
+def delete(request,id=None):
+    instance=get_object_or_404(Image,id=id)
+    instance.delete()
+    #TODO:But it's still on server, need to fix it
+    return redirect('/')

@@ -8,14 +8,19 @@ import os
 from PIL import Image as PImage
 from Ms.settings import MEDIA_ROOT
 # -*- coding: utf-8 -*-
+def upload_location(instance,filename):
+    return "%s/%s" % (instance.user, filename)
 class Image(models.Model):
     title = models.CharField(max_length=60)
-    image = models.ImageField(upload_to="images/", verbose_name="Image")
+    image = models.ImageField(upload_to=upload_location,
+                              verbose_name="Image",
+                              width_field='width_field',
+                              height_field='heigth_field')
+    width_field = models.IntegerField(default=0)
+    heigth_field = models.IntegerField(default=0)
     user = models.ForeignKey(User, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
-    width = models.IntegerField(blank=True, null=True)
-    height = models.IntegerField(blank=True, null=True)
-    thumbnail2 = models.ImageField(upload_to="media/", blank=True, null=True)
+    updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     liked_persons = models.ManyToManyField(User, related_name='follows', symmetrical=False, blank=True)
     likes = models.IntegerField(default=0)
     approved = models.BooleanField(default=False)
@@ -26,11 +31,6 @@ class Image(models.Model):
     def thumbnail(self):
         return """<a href="/media/%s"><img border="0" alt="" src="/media/%s" height="40" /></a>""" % (
             (self.image.name, self.image.name))
-
-    def save_model(self, request, obj, form, change):
-        obj.user = request.user
-        obj.save()
-
     # def save(self, *args, **kwargs):
     #     """Save image dimensions."""
     #     super(Image, self).save(*args, **kwargs)
@@ -45,9 +45,6 @@ class Image(models.Model):
     #     self.thumbnail2.save(thumb_fn, File(open(tf2.name)), save=False)
     #     tf2.close()
     #     super(Image, self).save(*args, ** kwargs)
-    def size(self):
-        """Image size."""
-        return "Width:%s x Height:%s" % (self.width, self.height)
     def tags_(self):
         lst = [x[1] for x in self.tags.values_list()]
         return str(join(lst, ','))

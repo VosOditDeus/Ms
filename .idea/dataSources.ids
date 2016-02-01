@@ -407,25 +407,28 @@ model</columns>
         <mandatory>1</mandatory>
         <data-type>datetime</data-type>
       </column>
-      <column id="108" parent="12" name="width">
+      <column id="108" parent="12" name="user_id">
         <data-type>int(11)</data-type>
       </column>
-      <column id="109" parent="12" name="height">
-        <data-type>int(11)</data-type>
-      </column>
-      <column id="110" parent="12" name="user_id">
-        <data-type>int(11)</data-type>
-      </column>
-      <column id="111" parent="12" name="thumbnail2">
-        <data-type>varchar(100)</data-type>
-      </column>
-      <column id="112" parent="12" name="likes">
+      <column id="109" parent="12" name="likes">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="113" parent="12" name="approved">
+      <column id="110" parent="12" name="approved">
         <mandatory>1</mandatory>
         <data-type>tinyint(1)</data-type>
+      </column>
+      <column id="111" parent="12" name="heigth_field">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="112" parent="12" name="updated">
+        <mandatory>1</mandatory>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="113" parent="12" name="width_field">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
       </column>
       <index id="114" parent="12" name="photo_image_e8701ad4">
         <columns>user_id</columns>
@@ -496,184 +499,193 @@ user_id</columns>
         <mandatory>1</mandatory>
         <data-type>varchar(50)</data-type>
       </column>
-      <key id="129" parent="14" name="PRIMARY">
+      <index id="129" parent="14" name="django_site_domain_a2e37b91_uniq">
+        <columns>domain</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="130" parent="14" name="django_site_domain_a2e37b91_uniq">
+        <columns>domain</columns>
+        <underlying-index>django_site_domain_a2e37b91_uniq</underlying-index>
+      </key>
+      <key id="131" parent="14" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <column id="130" parent="15" name="id">
+      <column id="132" parent="15" name="id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="131" parent="15" name="activation_key">
+      <column id="133" parent="15" name="activation_key">
         <mandatory>1</mandatory>
         <data-type>varchar(40)</data-type>
       </column>
-      <column id="132" parent="15" name="user_id">
+      <column id="134" parent="15" name="user_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <index id="133" parent="15" name="user_id">
+      <index id="135" parent="15" name="user_id">
         <columns>user_id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="134" parent="15" name="PRIMARY">
+      <key id="136" parent="15" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <key id="135" parent="15" name="user_id">
+      <key id="137" parent="15" name="user_id">
         <columns>user_id</columns>
         <underlying-index>user_id</underlying-index>
       </key>
-      <foreign-key id="136" parent="15" name="registration_registrationprofil_user_id_3f7685bb_fk_auth_user_id">
+      <foreign-key id="138" parent="15" name="registration_registrationprofil_user_id_3f7685bb_fk_auth_user_id">
         <columns>user_id</columns>
         <ref-key>~.auth_user.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="137" parent="16" name="id">
+      <column id="139" parent="16" name="id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="138" parent="16" name="name">
+      <column id="140" parent="16" name="name">
         <mandatory>1</mandatory>
         <data-type>varchar(100)</data-type>
       </column>
-      <column id="139" parent="16" name="slug">
+      <column id="141" parent="16" name="slug">
         <mandatory>1</mandatory>
         <data-type>varchar(100)</data-type>
       </column>
-      <index id="140" parent="16" name="name">
+      <index id="142" parent="16" name="name">
         <columns>name</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="141" parent="16" name="slug">
+      <index id="143" parent="16" name="slug">
         <columns>slug</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="142" parent="16" name="name">
+      <key id="144" parent="16" name="name">
         <columns>name</columns>
         <underlying-index>name</underlying-index>
       </key>
-      <key id="143" parent="16" name="PRIMARY">
+      <key id="145" parent="16" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <key id="144" parent="16" name="slug">
+      <key id="146" parent="16" name="slug">
         <columns>slug</columns>
         <underlying-index>slug</underlying-index>
       </key>
-      <column id="145" parent="17" name="id">
+      <column id="147" parent="17" name="id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="146" parent="17" name="object_id">
+      <column id="148" parent="17" name="object_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="147" parent="17" name="content_type_id">
+      <column id="149" parent="17" name="content_type_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="148" parent="17" name="tag_id">
+      <column id="150" parent="17" name="tag_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <index id="149" parent="17" name="taggit_taggeditem_af31437c">
+      <index id="151" parent="17" name="taggit_taggeditem_af31437c">
         <columns>object_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="150" parent="17" name="taggit_taggeditem_content_type_id_18cc9d40_idx">
+      <index id="152" parent="17" name="taggit_taggeditem_content_type_id_18cc9d40_idx">
         <columns>content_type_id
 object_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="151" parent="17" name="taggit_taggeditem_tag_id_d95e0d2_fk_taggit_tag_id">
+      <index id="153" parent="17" name="taggit_taggeditem_tag_id_d95e0d2_fk_taggit_tag_id">
         <columns>tag_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="152" parent="17" name="PRIMARY">
+      <key id="154" parent="17" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="153" parent="17" name="taggit_taggeditem_tag_id_d95e0d2_fk_taggit_tag_id">
+      <foreign-key id="155" parent="17" name="taggit_taggeditem_tag_id_d95e0d2_fk_taggit_tag_id">
         <columns>tag_id</columns>
         <ref-key>~.taggit_tag.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="154" parent="17" name="taggit_taggedi_content_type_id_5c3ec8f_fk_django_content_type_id">
+      <foreign-key id="156" parent="17" name="taggit_taggedi_content_type_id_5c3ec8f_fk_django_content_type_id">
         <columns>content_type_id</columns>
         <ref-key>~.django_content_type.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="155" parent="18" name="id">
+      <column id="157" parent="18" name="id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="156" parent="18" name="title">
+      <column id="158" parent="18" name="title">
         <mandatory>1</mandatory>
         <data-type>varchar(200)</data-type>
       </column>
-      <key id="157" parent="18" name="PRIMARY">
+      <key id="159" parent="18" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <column id="158" parent="19" name="id">
+      <column id="160" parent="19" name="id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="159" parent="19" name="categories_id">
+      <column id="161" parent="19" name="categories_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="160" parent="19" name="image_id">
+      <column id="162" parent="19" name="image_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <index id="161" parent="19" name="categories_id">
+      <index id="163" parent="19" name="categories_id">
         <columns>categories_id
 image_id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <index id="162" parent="19" name="photo_categories_images_image_id_4c70a363_fk_photo_image_id">
+      <index id="164" parent="19" name="photo_categories_images_image_id_4c70a363_fk_photo_image_id">
         <columns>image_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="163" parent="19" name="categories_id">
+      <key id="165" parent="19" name="categories_id">
         <columns>categories_id
 image_id</columns>
         <underlying-index>categories_id</underlying-index>
       </key>
-      <key id="164" parent="19" name="PRIMARY">
+      <key id="166" parent="19" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="165" parent="19" name="photo_categories_images_image_id_4c70a363_fk_photo_image_id">
+      <foreign-key id="167" parent="19" name="photo_categories_images_image_id_4c70a363_fk_photo_image_id">
         <columns>image_id</columns>
         <ref-key>~.photo_image.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="166" parent="19" name="photo_categories_i_categories_id_5a01ba55_fk_photo_categories_id">
+      <foreign-key id="168" parent="19" name="photo_categories_i_categories_id_5a01ba55_fk_photo_categories_id">
         <columns>categories_id</columns>
         <ref-key>~.photo_categories.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="167" parent="20" name="key">
+      <column id="169" parent="20" name="key">
         <mandatory>1</mandatory>
         <data-type>varchar(200)</data-type>
       </column>
-      <column id="168" parent="20" name="value">
+      <column id="170" parent="20" name="value">
         <mandatory>1</mandatory>
         <data-type>longtext</data-type>
       </column>
-      <key id="169" parent="20" name="PRIMARY">
+      <key id="171" parent="20" name="PRIMARY">
         <columns>key</columns>
         <primary>1</primary>
       </key>

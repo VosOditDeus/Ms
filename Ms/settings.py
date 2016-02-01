@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import djcelery
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -49,34 +50,20 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 ROOT_URLCONF = 'Ms.urls'
+
 WSGI_APPLICATION = 'Ms.wsgi.application'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static",'static_root')
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "static",'media_root')#os.path.dirname(BASE_DIR) - if need to put it outside of project dir
+# STATIC_ROOT = os.path.join(BASE_DIR, "static_pr","static")
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_env', 'static_root')
+
 MEDIA_URL = '/media/'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap'
-#ADMIN_MEDIA_PREFIX = '/static/admin/'
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-# Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_env', 'media_root')
+# MEDIA_ROOT = os.path.join(BASE_DIR, "static_pr","media")
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    #'/home/vosoditdeus/PycharmProjects/Ms/'
+    os.path.join(BASE_DIR, "static_pr","static"),
+    #os.path.join(os.path.dirname(BASE_DIR) "static_env"),
 )
 TEMPLATES = [
     {
@@ -93,6 +80,16 @@ TEMPLATES = [
         },
     },
 ]
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'UTC'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
 try:
     from local_settings import *
 except ImportError:

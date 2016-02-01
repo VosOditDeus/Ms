@@ -2,8 +2,6 @@
 {% load staticfiles %}
 {% block content %}
     <div class="main">
-
-
         <a href="{{ backurl }}">&lt;&lt; back</a>
         <!-- Image -->
         <ul>
@@ -17,14 +15,16 @@
                          {% if image.width > 700 %}width="700"{% endif %}/></a>
             </ul>
         </ul>
-        {% if image.user == user %}
-            <button type="button" class="btn btn-default" id="edit">Edit</button>
-            <form method="POST" action="{% url 'update' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            {% if errors %}
-                <p>{{ errors }}</p>
-            {% endif %}
-            <button type="submit" class="btn btn-default">Submit</button></form></div>
+        {% if image.user == user.username %}
+            <p>{{ image.user }}</p>
+            <p>{{ user.username }}</p>
+            <form method="POST" action="{% url 'update' image.id %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {% if errors %}
+                    <p>{{ errors }}</p>
+                {% endif %}
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form></div>
         {% endif %}
 {% endblock %}
