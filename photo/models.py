@@ -1,12 +1,9 @@
 from django.db import models
 from taggit.managers import TaggableManager
-from django.core.files import File
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 from django.contrib.auth.models import User
-from tempfile import NamedTemporaryFile
 from string import join
-import os
-from PIL import Image as PImage
-from Ms.settings import MEDIA_ROOT
 # -*- coding: utf-8 -*-
 def upload_location(instance,filename):
     return "%s/%s" % (instance.user, filename)
@@ -49,7 +46,12 @@ class Image(models.Model):
         lst = [x[1] for x in self.tags.values_list()]
         return str(join(lst, ','))
     thumbnail.allow_tags = True
-
+#TODO: can be bugs with POST delete, check it up.
+@receiver(pre_delete,sender=Image)
+def image_post_delete_handler(sender, **kwargs):
+    image = kwargs['instance']
+    storage, path = image.image.storage, image.image.path
+    storage.delete(path)
 
 class Categories(models.Model):
     title = models.CharField(max_length=200)

@@ -12,7 +12,7 @@ from django.core.mail import send_mail
 from Ms.local_settings import EMAIL_HOST_USER
 # coding: utf-8
 def God(request):
-    categories_list = Categories.objects.all()
+    categories_list = Categories.objects.all()[:10]
     images_filtered_list = Image.objects.all().filter(approved=True)
     last_photos_list = images_filtered_list.filter(created=datetime.today())
     args = {}
