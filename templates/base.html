@@ -8,14 +8,14 @@
                 <a href="{% url 'cat_detail' cat.pk %}">{{cat.title}}</a><br/>
             {% endfor %}
             {% for ls in last %}
-                <a href="{% url 'image' ls.id %}">{{ i.title}}}">
+                <a href="{% url 'image' ls.id %}">
                         {% if ls.approved   %}
                         <a href="{% url 'image' ls.id %}">
                             <img border="0" alt="" src="{{ media_url }}{{ ls.image.name }}" height="100"/></a>
                         {% endif %}
             {% endfor %}
             {% for img in images %}
-                <a href="{% url 'image' img.id %}">{{ i.title}}"><img border="0" alt="" src="{{ media_url }}{{ img.image.name }}" height="100"/></a></a>
+                <a href="{% url 'image' img.id %}">{{ i.title}}<img border="0" alt="" src="{{ media_url }}{{ img.image.name }}" height="100"/></a></a>
         {% endfor %}
         <!-- Next/Prev page links  -->
         {% if images.object_list and images.paginator.num_pages > 1 %}

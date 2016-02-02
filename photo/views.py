@@ -152,8 +152,10 @@ def contact(request):
         #     print key,value
     context = {'form': form}
     return render(request, 'cus.html', context)
+#TODO: test it on any other environment
 def delete(request,id=None):
-    instance=get_object_or_404(Image,id=id)
+    instance=get_object_or_404(Image, id=id)
+    os.remove(instance.image.path)
     instance.delete()
-    #TODO:But it's still on server, need to fix it
+    #TODO: need to change it on album reverse absolute ulr, i think
     return redirect('/')
